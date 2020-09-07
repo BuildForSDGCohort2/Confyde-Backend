@@ -1,5 +1,5 @@
   
-  <p align="center">Confyde API built with Nest - a progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+<p align="left">Confyde API built with Nest - a progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
   
 ## Description
 
