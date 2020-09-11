@@ -1,7 +1,14 @@
 import { PermissionsService } from './../permissions/permissions.service';
 import { Controller, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
-import { Crud, CrudController, Override, CrudRequest, ParsedRequest, ParsedBody } from '@nestjsx/crud';
+import {
+  Crud,
+  CrudController,
+  Override,
+  CrudRequest,
+  ParsedRequest,
+  ParsedBody,
+} from '@nestjsx/crud';
 import { plainToClass } from 'class-transformer';
 import { CreateRolesDto } from './dto/create-roles.dto';
 import { UpdateRolesDto } from './dto/update-roles.dto';
@@ -18,18 +25,16 @@ import { AdminAuthGuard } from '../../auth/guards/admin.guard';
     update: UpdateRolesDto,
   },
   routes: {
-    exclude: [
-      'replaceOneBase',
-    ],
+    exclude: ['replaceOneBase'],
     deleteOneBase: {
       returnDeleted: false,
     },
   },
   params: {
     id: {
-        field: 'id',
-        type: 'string',
-        primary: true,
+      field: 'id',
+      type: 'string',
+      primary: true,
     },
   },
   query: {
@@ -67,9 +72,9 @@ export class RolesController implements CrudController<Role> {
     const data: Role = plainToClass(Role, dto);
     const permissionIds: number[] = dto.permissions ? dto.permissions : [];
 
-    const perms = permissionIds.length ? await this.permissionService.repository
-      .findByIds(permissionIds)
-    : [];
+    const perms = permissionIds.length
+      ? await this.permissionService.repository.findByIds(permissionIds)
+      : [];
 
     if (perms.length) {
       data.permissions = perms;
@@ -90,9 +95,9 @@ export class RolesController implements CrudController<Role> {
     const data: Role = plainToClass(Role, dto);
     const permissionIds: number[] = dto.permissions ? dto.permissions : [];
 
-    data.permissions = permissionIds.length ? await this.permissionService.repository
-      .findByIds(permissionIds)
-    : [];
+    data.permissions = permissionIds.length
+      ? await this.permissionService.repository.findByIds(permissionIds)
+      : [];
 
     return this.base.updateOneBase(req, data);
   }

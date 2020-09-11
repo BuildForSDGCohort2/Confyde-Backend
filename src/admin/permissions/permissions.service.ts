@@ -1,14 +1,14 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { Repository, DeepPartial } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { Permissions } from '../../shared/database';
+import { Permission } from '../../shared/database';
 
 @Injectable()
-export class PermissionsService extends TypeOrmCrudService<Permissions> {
+export class PermissionsService extends TypeOrmCrudService<Permission> {
   constructor(
-    @InjectRepository(Permissions)
-    public readonly repository: Repository<Permissions>,
+    @InjectRepository(Permission)
+    public readonly repository: Repository<Permission>,
   ) {
     super(repository);
   }

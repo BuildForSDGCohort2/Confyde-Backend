@@ -1,7 +1,8 @@
 import slug from 'limax';
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import * as crypto from 'crypto';
-import { Url, format as FormatUrl } from 'url';
+import { format as FormatUrl } from 'url';
+import { ConnectionOptions } from 'typeorm';
 
 const titleCase = (str: string) => {
   return str
@@ -12,9 +13,6 @@ const titleCase = (str: string) => {
     })
     .join(' ');
 };
-
-const algorithm = 'aes-256-cbc';
-const cryptoIv = Buffer.from(crypto.randomBytes(8)).toString('hex');
 
 const generateKeys = (path: string, key: string) => {
   const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
@@ -126,7 +124,7 @@ export const toBool = (value: any): boolean => {
   );
 };
 
-export const route = (params?: object) => {
+export const route = () => {
   const root = (frontend?: boolean): string => {
     return FormatUrl(
       new URL(
@@ -148,3 +146,9 @@ export const route = (params?: object) => {
 
   return { root, toFullUrl };
 };
+
+// export const TestDBConnectionInfo: ConnectionOptions = {
+//   type: 'sqlite',
+//   database: `${process.cwd()}/data/e2e-tests.sqlite`,
+//   logging: true,
+// };

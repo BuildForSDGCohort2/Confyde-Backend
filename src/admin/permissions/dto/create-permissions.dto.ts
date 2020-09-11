@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber, MinLength, MaxLength, IsOptional, Equals, Allow, IsInt, IsNumberString } from 'class-validator';
-import { IsUnique, IsEqual } from '../../../shared/validations';
-import { Permissions } from '../../../shared/database';
+import { IsNotEmpty, MaxLength, IsOptional } from 'class-validator';
+import { IsUnique } from '../../../shared/validations';
+import { Permission } from '../../../shared/database';
 
 export class CreatePermissionsDto {
   @ApiProperty()
-  @IsUnique(Permissions)
+  @IsUnique(Permission)
   @MaxLength(50, { message: 'Name too Long' })
   @IsNotEmpty({ message: 'Name is required' })
   name: string;
@@ -15,7 +15,7 @@ export class CreatePermissionsDto {
   @IsNotEmpty({ message: 'Display name is required' })
   displayName: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Group name' })
   @IsOptional()
-  tableName: string;
+  groupName: string;
 }

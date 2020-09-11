@@ -1,7 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 
 @Entity('permissions')
-export class Permissions {
+export class Permission {
   @PrimaryGeneratedColumn({
     type: 'bigint',
   })
@@ -12,6 +20,9 @@ export class Permissions {
 
   @Column({ length: 100, name: 'display_name' })
   displayName: string;
+
+  @Column({ length: 100, name: 'group_name', nullable: true })
+  groupName: string;
 
   @CreateDateColumn({
     name: 'created_at',

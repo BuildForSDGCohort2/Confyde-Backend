@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        name: 'default',
+        name: 'test',
         type: 'mysql',
         host: configService.get('database.host'),
         port: configService.get<number>('database.port'),
@@ -17,11 +17,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         charset: configService.get('database.charset'),
         entityPrefix: configService.get('database.prefix') || '',
         autoLoadEntities: true,
-        logger: 'advanced-console',
-        logging:
-          configService.get('app.debug') === true
-            ? 'all'
-            : configService.get('app.debug'),
         legacySpatialSupport: configService.get(
           'database.legacySpatialSupport',
         ),
@@ -30,4 +25,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
   ],
 })
-export class DatabaseModule {}
+export class TestDatabaseModule {}
+
+/*
+
+name: 'test',
+type: 'sqlite',
+database: `${process.cwd()}/data/e2e-tests.sqlite`,
+autoLoadEntities: true,
+*/
+// entities: ['./**/*.entity.js'],

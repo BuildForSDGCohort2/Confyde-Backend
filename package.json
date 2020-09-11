@@ -18,7 +18,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "postinstall": "nest build"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.5.1",
@@ -50,6 +51,7 @@
     "replace-in-file": "^6.1.0",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.5",
+    "sqlite3": "^5.0.0",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.25"
   },

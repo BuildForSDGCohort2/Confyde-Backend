@@ -25,7 +25,8 @@ export const STRINGS = {
       invalid: 'Authentication failed, invalid credentials',
     },
     password: {
-      reset: 'Password reset link sent to the email address if you are a registered user'
-    }
-  }
-}
+      reset:
+        'Password reset link sent to the email address if you are a registered user',
+    },
+  },
+};

@@ -1,13 +1,19 @@
 import { AdminAuthGuard } from '../../auth/guards/admin.guard';
-import { Controller, Post, Get, Query, Body, Patch, Param, UseInterceptors, UseGuards } from '@nestjs/common';
+import { Controller, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
-import { Crud, CrudController, Override, CrudRequest, ParsedRequest, ParsedBody } from '@nestjsx/crud';
+import {
+  Crud,
+  CrudController,
+  Override,
+  CrudRequest,
+  ParsedRequest,
+  ParsedBody,
+} from '@nestjsx/crud';
 import { plainToClass } from 'class-transformer';
 import { AdminUsersService } from './admin-users.service';
 import { Admin } from '../../shared/database';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-import { ValidateUniqueParam } from '../../shared/validations';
 import { RolesService } from '../roles/roles.service';
 
 @Crud({
@@ -20,19 +26,16 @@ import { RolesService } from '../roles/roles.service';
     replace: UpdateAdminDto,
   },
   routes: {
-    exclude: [
-      'replaceOneBase',
-      'createManyBase',
-    ],
+    exclude: ['replaceOneBase', 'createManyBase'],
     deleteOneBase: {
       returnDeleted: false,
     },
   },
   params: {
     id: {
-        field: 'id',
-        type: 'string',
-        primary: true,
+      field: 'id',
+      type: 'string',
+      primary: true,
     },
   },
   query: {
@@ -73,26 +76,18 @@ export class AdminUsersController implements CrudController<Admin> {
   @Patch('admin-users/:id')
   async updateOne(
     @ParsedRequest() req: CrudRequest,
-    @ValidateUniqueParam({
-      name: 'email',
-      field: 'email',
-      entity: Admin,
-      mode: 'Update',
-      table: 'admins',
-    }) uniq: boolean,
     @ParsedBody() dto: Partial<UpdateAdminDto>,
   ): Promise<any> {
     const data: Admin = plainToClass(Admin, dto);
     const roleIds: number[] = dto.roles || [];
     const role: number = dto.role;
 
-    data.role = role > 0 ? await this.rolesService.repository
-      .findOne(role)
-    : null;
+    data.role =
+      role > 0 ? await this.rolesService.repository.findOne(role) : null;
 
-    data.roles = roleIds.length ? await this.rolesService.repository
-      .findByIds(roleIds)
-    : [];
+    data.roles = roleIds.length
+      ? await this.rolesService.repository.findByIds(roleIds)
+      : [];
 
     return this.base.updateOneBase(req, data);
   }

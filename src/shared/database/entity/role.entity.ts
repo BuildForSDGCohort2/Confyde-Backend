@@ -1,5 +1,15 @@
-import { Entity, Column, ManyToMany, JoinTable, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
-import { Permissions } from './permission.entity';
+import {
+  Entity,
+  Column,
+  ManyToMany,
+  JoinTable,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
+import { Permission } from './permission.entity';
 
 @Entity('roles')
 export class Role {
@@ -14,7 +24,7 @@ export class Role {
   @Column({ length: 100, name: 'display_name' })
   displayName: string;
 
-  @ManyToMany(() => Permissions, { eager: true, cascade: true })
+  @ManyToMany(() => Permission, { eager: true, cascade: true })
   @JoinTable({
     name: 'role_permissions', // table name for the junction table of this relation
     joinColumn: {
@@ -24,7 +34,7 @@ export class Role {
       name: 'permission_id',
     },
   })
-  permissions: Permissions[];
+  permissions: Permission[];
 
   @CreateDateColumn({
     name: 'created_at',

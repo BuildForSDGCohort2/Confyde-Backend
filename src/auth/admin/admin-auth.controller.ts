@@ -34,7 +34,7 @@ export class AdminAuthController {
   @UseGuards(AdminAuthGuard)
   @ApiBearerAuth('JWT')
   @Get('profile')
-  async profile(@Req() req: any) {
+  async profile(@Req() req: any): Promise<any> {
     const user = <Admin>req.user;
 
     delete user.password;

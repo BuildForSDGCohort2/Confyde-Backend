@@ -1,8 +1,16 @@
-import { Entity, Repository, getRepository } from 'typeorm';
-import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments } from 'class-validator';
-import { createParamDecorator, ExecutionContext, Inject, ArgumentsHost, BadRequestException, UnprocessableEntityException } from '@nestjs/common';
-import { getAction, CrudConfigService } from '@nestjsx/crud';
-import { REQUEST, HttpAdapterHost } from '@nestjs/core';
+import { Repository, getRepository } from 'typeorm';
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
+} from 'class-validator';
+import {
+  createParamDecorator,
+  ArgumentsHost,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 
 @ValidatorConstraint({ async: true })
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
@@ -13,21 +21,27 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 
     conditions[args.property] = value;
 
-    return await repo.find(conditions)
-      .then(record => {
-        return record.length ? false : true;
-      });
+    return await repo.find(conditions).then(record => {
+      return record.length ? false : true;
+    });
   }
 
-  defaultMessage(args: ValidationArguments) { // here you can provide default error message if validation failed
+  defaultMessage(args: ValidationArguments) {
+    // here you can provide default error message if validation failed
     return 'Record already exists with ($value)';
   }
 }
 
-export function IsUnique(entity: any, column?: string, idColumn?: string, idValue?: any, validationOptions?: ValidationOptions) {
+export function IsUnique(
+  entity: any,
+  column?: string,
+  idColumn?: string,
+  idValue?: any,
+  validationOptions?: ValidationOptions,
+) {
   // tslint:disable-next-line: no-console
   // tslint:disable-next-line: ban-types
-  return (object: Object, propertyName: string) => {
+  return (object: any, propertyName: string) => {
     registerDecorator({
       name: 'isUnique',
       target: object.constructor,
@@ -53,11 +67,14 @@ export interface UniqueColumn {
 export const ValidateUniqueParam = createParamDecorator(
   async (column: UniqueColumn, args: ArgumentsHost) => {
     const request = args.switchToHttp().getRequest();
-    const col = Object.assign({
-      idField: 'id',
-      mode: 'Create',
-      message: `Record already exists with (${request.body[column.field]})`,
-    }, column);
+    const col = Object.assign(
+      {
+        idField: 'id',
+        mode: 'Create',
+        message: `Record already exists with (${request.body[column.field]})`,
+      },
+      column,
+    );
 
     if (!request.body[col.field]) {
       return false;
@@ -69,7 +86,8 @@ export const ValidateUniqueParam = createParamDecorator(
       qb.where(`${col.idField} != :id`, { id: request.params.id });
     }
 
-    const exists = await qb.andWhere(`${col.field} = :col`, { col: request.body[col.field] })
+    const exists = await qb
+      .andWhere(`${col.field} = :col`, { col: request.body[col.field] })
       .getCount();
 
     if (exists) {

@@ -56,14 +56,14 @@ export class AuthService {
     return user;
   }
 
-  async validateUser(userId: any, data: any, userType: string = 'admin') {
+  async validateUser(userId: any, data: any, userType = 'admin') {
     let repo = null;
 
     if (userType === 'admin') {
       repo = this.adminRepo;
     }
 
-    let user = await repo.findOne({
+    const user = await repo.findOne({
       where: {
         id: userId,
         email: data.email,
@@ -97,7 +97,7 @@ export class AuthService {
   }
 
   async resetPassword(dto: UserPasswordResetDto, userType: string) {
-    let user = null;
+    const user = null;
 
     if (userType === 'admin') {
       throw new HttpException('Invalid Request', HttpStatus.BAD_REQUEST);

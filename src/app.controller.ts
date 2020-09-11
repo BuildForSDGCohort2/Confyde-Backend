@@ -19,7 +19,9 @@ export class AppController {
   @Get('/keys')
   async newAppKeys(): Promise<string> {
     const akRegex = new RegExp(/APP_KEY?\w.*/);
-    const newAppKey = this.encrypter.base64_encode(this.encrypter.generateKey('AES-128-CBC').toString('hex'));
+    const newAppKey = this.encrypter.base64_encode(
+      this.encrypter.generateKey('AES-128-CBC').toString('hex'),
+    );
     // const portRegex = new RegExp(/(PORT)=[0-9]{0,}/);
 
     const options = {
@@ -27,7 +29,7 @@ export class AppController {
     };
 
     try {
-      const results = await replaceInFile({
+      await replaceInFile({
         from: akRegex,
         to: `APP_KEY=${newAppKey}`,
         ...options,
