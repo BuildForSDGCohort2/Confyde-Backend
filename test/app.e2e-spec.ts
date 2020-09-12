@@ -6,9 +6,16 @@ import { AppModule } from './../src/app.module';
 import { getConnectionManager } from 'typeorm';
 
 afterAll(async done => {
-  const conn = getConnectionManager().get('default');
-  await conn.close();
-  done();
+  try {
+    const conn = getConnectionManager().get('default') ?? null;
+    if (conn) {
+      await conn.close();
+    }
+  } catch (_) {
+    console.log('Database Connection not Found');
+  } finally {
+    done();
+  }
 });
 
 describe('AppController (e2e)', () => {
