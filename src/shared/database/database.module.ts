@@ -25,6 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         legacySpatialSupport: configService.get(
           'database.legacySpatialSupport',
         ),
+        synchronize: configService.get('database.synchronize'),
       }),
       inject: [ConfigService],
     }),

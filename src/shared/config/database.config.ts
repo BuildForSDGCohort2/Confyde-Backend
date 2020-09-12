@@ -17,4 +17,5 @@ export default registerAs('database', () => ({
       ? toBool(process.env.DB_LEGACY_SPATIAL)
       : true,
   test_database: process.env.TEST_DB_NAME,
+  synchronize: process.env.SYNC_DB || false,
 }));
