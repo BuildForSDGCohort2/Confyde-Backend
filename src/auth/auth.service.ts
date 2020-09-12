@@ -9,9 +9,9 @@ import { Repository, MoreThan } from 'typeorm';
 import { UserLoginDto } from '../shared/dto/user-login.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { UserPasswordResetDto } from 'src/shared/dto/user-password-reset.dto';
-import { UrlSigner } from 'src/shared/url-signer';
-import { route } from 'src/shared/helpers';
+import { UserPasswordResetDto } from './../shared/dto/user-password-reset.dto';
+import { UrlSigner } from './../shared/url-signer';
+import { route } from './../shared/helpers';
 
 @Injectable()
 export class AuthService {

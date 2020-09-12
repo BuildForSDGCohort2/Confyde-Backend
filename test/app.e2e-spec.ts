@@ -3,6 +3,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { getConnectionManager } from 'typeorm';
+
+afterAll(async done => {
+  const conn = getConnectionManager().get('default');
+  await conn.close();
+  done();
+});
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;

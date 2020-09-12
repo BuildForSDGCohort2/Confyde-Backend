@@ -14,7 +14,11 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule],
       controllers: [AppController],
-      providers: [AppService, Encrypter, ConfigService],
+      providers: [
+        AppService,
+        Encrypter,
+        ConfigService,
+      ],
     }).compile();
 
     appController = app.get<AppController>(AppController);

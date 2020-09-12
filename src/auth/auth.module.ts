@@ -11,7 +11,7 @@ import { Helpers } from '../shared/helpers';
 import { Encrypter } from '../shared/encrypter';
 import { AdminStrategy } from './strategies/admin.strategy';
 import { AdminAuthController } from './admin/admin-auth.controller';
-import { UrlSigner } from 'src/shared/url-signer';
+import { UrlSigner } from './../shared/url-signer';
 
 @Module({
   imports: [

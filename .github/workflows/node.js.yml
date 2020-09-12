@@ -47,8 +47,6 @@ jobs:
       run: npm run test
     - name: Run Coverage Test
       run: npm run test:cov
-    - name: Run Test Debug
-      run: npm run test:debug
     - name: Run Test e2e
       run: npm run test:e2e
     - name: Start 
