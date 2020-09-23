@@ -49,13 +49,17 @@ export class Role {
   updatedAt: Date;
 
   @BeforeInsert()
-  beforeCreate() {
+  beforeCreate(): null {
     this.createdAt = new Date();
     this.updatedAt = this.createdAt;
+
+    return null;
   }
 
   @BeforeUpdate()
-  beforeUpdate() {
+  beforeUpdate(): null {
     this.updatedAt = new Date();
+
+    return null;
   }
 }

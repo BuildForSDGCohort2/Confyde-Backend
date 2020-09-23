@@ -37,13 +37,17 @@ export class Permission {
   updatedAt: Date;
 
   @BeforeInsert()
-  beforeCreate() {
+  beforeCreate(): null {
     this.createdAt = new Date();
     this.updatedAt = this.createdAt;
+
+    return;
   }
 
   @BeforeUpdate()
-  beforeUpdate() {
+  beforeUpdate(): null {
     this.updatedAt = new Date();
+
+    return;
   }
 }
