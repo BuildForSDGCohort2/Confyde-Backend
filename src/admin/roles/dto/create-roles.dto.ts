@@ -15,7 +15,7 @@ export class CreateRolesDto {
   @IsNotEmpty({ message: 'Display name is required' })
   displayName: string;
 
-  @ApiProperty({type: [Number]})
+  @ApiProperty({ type: [Number] })
   @IsOptional()
   permissions: number[];
 }

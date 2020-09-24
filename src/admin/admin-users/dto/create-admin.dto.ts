@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber, MinLength, MaxLength, IsOptional, Equals, Allow, IsInt, IsNumberString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  MaxLength,
+  IsOptional,
+  Allow,
+} from 'class-validator';
 import { IsEqual, IsUnique } from '../../../shared/validations';
 import { Admin } from '../../../shared/database';
 
@@ -18,7 +25,7 @@ export class CreateAdminDto {
   @IsUnique(Admin)
   @MaxLength(50, { message: 'Email too Long' })
   @IsNotEmpty({ message: 'Email is required' })
-  @IsEmail({}, { message: 'Enter a valid email address'})
+  @IsEmail({}, { message: 'Enter a valid email address' })
   email: string;
 
   @ApiProperty()
@@ -34,17 +41,17 @@ export class CreateAdminDto {
   @IsOptional()
   avatar: string;
 
-  @ApiProperty({type: Number})
+  @ApiProperty({ type: Number })
   @IsOptional()
   @IsNumber({}, { message: 'Invalid Role' })
   role: number;
 
-  @ApiProperty({type: [Number]})
+  @ApiProperty({ type: [Number] })
   @IsOptional()
   @Allow()
   roles: number[];
 
-  @ApiProperty({type: Number})
-  @IsNotEmpty({ message: 'Status is required'})
+  @ApiProperty({ type: Number })
+  @IsNotEmpty({ message: 'Status is required' })
   status: number;
 }

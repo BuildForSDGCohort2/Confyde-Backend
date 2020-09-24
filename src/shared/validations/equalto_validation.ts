@@ -1,4 +1,8 @@
-import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments, registerDecorator, ValidationOptions } from 'class-validator';
+import {
+  ValidationArguments,
+  registerDecorator,
+  ValidationOptions,
+} from 'class-validator';
 
 // @ValidatorConstraint({ async: false })
 // export class IsEqualTo implements ValidatorConstraintInterface {
@@ -29,8 +33,11 @@ import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments,
 //   };
 // }
 
-export const IsEqual = (property: string, validationOptions?: ValidationOptions) => {
-  return (object: any, propertyName: string) => {
+export const IsEqual = (
+  property: string,
+  validationOptions?: ValidationOptions,
+) => {
+  return (object: any, propertyName: string): any => {
     registerDecorator({
       name: 'isEqual',
       target: object.constructor,
@@ -41,8 +48,7 @@ export const IsEqual = (property: string, validationOptions?: ValidationOptions)
         validate(value: any, args: ValidationArguments) {
           const [relatedPropertyName] = args.constraints;
           const relatedValue = (args.object as any)[relatedPropertyName];
-          return typeof value === typeof relatedValue &&
-            value === relatedValue;
+          return typeof value === typeof relatedValue && value === relatedValue;
         },
       },
     });

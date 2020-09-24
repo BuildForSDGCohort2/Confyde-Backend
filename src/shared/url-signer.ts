@@ -23,9 +23,9 @@ export class UrlSigner {
     // '.': '=',
   };
 
-  sigKey: string = 'sig';
-  expKey: string = 'expires';
-  expiry: number = 3600;
+  sigKey = 'sig';
+  expKey = 'expires';
+  expiry = 3600;
 
   constructor(public encrypter: Encrypter) {}
 

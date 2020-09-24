@@ -18,11 +18,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         entityPrefix: configService.get('database.prefix') || '',
         autoLoadEntities: true,
         logger: 'advanced-console',
-        logging: configService.get('app.debug') === true ? 'all' : configService.get('app.debug'),
-        legacySpatialSupport: configService.get('database.legacySpatialSupport')
+        logging:
+          configService.get('app.debug') === true
+            ? 'all'
+            : configService.get('app.debug'),
+        legacySpatialSupport: configService.get(
+          'database.legacySpatialSupport',
+        ),
+        synchronize: configService.get('database.synchronize'),
       }),
       inject: [ConfigService],
     }),
   ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

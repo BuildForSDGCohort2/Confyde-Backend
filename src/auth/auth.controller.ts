@@ -14,7 +14,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private configService: ConfigService,
     private encrypter: Encrypter,
-  ) { }
+  ) {}
 
   // @ApiBody({
   //   type: UserLoginDto,

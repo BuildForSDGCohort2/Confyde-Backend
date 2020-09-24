@@ -7,8 +7,8 @@ import {
   ApiUnauthorizedResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { UserLoginDto } from 'src/shared/dto/user-login.dto';
-import { STRINGS } from 'src/shared/constants';
+import { UserLoginDto } from './../../shared/dto/user-login.dto';
+import { STRINGS } from './../../shared/constants';
 import { AdminAuthGuard } from '../guards/admin.guard';
 import { Admin } from './../../shared/database';
 
@@ -34,7 +34,7 @@ export class AdminAuthController {
   @UseGuards(AdminAuthGuard)
   @ApiBearerAuth('JWT')
   @Get('profile')
-  async profile(@Req() req: any) {
+  async profile(@Req() req: any): Promise<any> {
     const user = <Admin>req.user;
 
     delete user.password;

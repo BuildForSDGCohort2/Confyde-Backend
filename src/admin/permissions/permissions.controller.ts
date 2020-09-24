@@ -22,13 +22,13 @@ import {
 import { plainToClass } from 'class-transformer';
 import { CreatePermissionsDto } from './dto/create-permissions.dto';
 import { UpdatePermissionsDto } from './dto/update-permissions.dto';
-import { Permissions } from '../../shared/database';
+import { Permission } from '../../shared/database';
 import { PermissionsService } from './permissions.service';
 import { AdminAuthGuard } from '../../auth/guards/admin.guard';
 
 @Crud({
   model: {
-    type: Permissions,
+    type: Permission,
   },
   dto: {
     create: CreatePermissionsDto,
@@ -59,10 +59,10 @@ import { AdminAuthGuard } from '../../auth/guards/admin.guard';
 @UseGuards(AdminAuthGuard)
 @ApiBearerAuth('JWT')
 @Controller('admin/permissions')
-export class PermissionsController implements CrudController<Permissions> {
+export class PermissionsController implements CrudController<Permission> {
   constructor(public service: PermissionsService) {}
 
-  get base(): CrudController<Permissions> {
+  get base(): CrudController<Permission> {
     return this;
   }
 
@@ -75,7 +75,7 @@ export class PermissionsController implements CrudController<Permissions> {
     @ParsedRequest() req: CrudRequest,
     @ParsedBody() dto: Partial<UpdatePermissionsDto>,
   ): Promise<any> {
-    const data: Permissions = plainToClass(Permissions, dto);
+    const data: Permission = plainToClass(Permission, dto);
 
     return this.base.updateOneBase(req, data);
   }
@@ -90,7 +90,7 @@ export class PermissionsController implements CrudController<Permissions> {
   async generatePermissions(
     @ParsedRequest() req: CrudRequest,
     @Body() dto: GeneratePermissionsDto,
-  ) {
+  ): Promise<any> {
     const permissions = [];
     const actions: string[] | string =
       typeof dto.crud === 'string' && dto.crud === 'all'
@@ -111,7 +111,7 @@ export class PermissionsController implements CrudController<Permissions> {
     }
 
     const manyEntity: CreateManyDto = {
-      bulk: plainToClass(Permissions, permissions),
+      bulk: plainToClass(Permission, permissions),
     };
 
     return this.base.createManyBase(req, manyEntity);

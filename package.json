@@ -50,6 +50,7 @@
     "replace-in-file": "^6.1.0",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.5",
+    "sqlite3": "^5.0.0",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.25"
   },

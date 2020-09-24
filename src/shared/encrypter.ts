@@ -5,9 +5,9 @@ import { Exception } from 'handlebars';
 
 @Injectable()
 export class Encrypter {
-  key: string = '';
-  algorithm: string = '';
-  ivLength: number = 16;
+  key = '';
+  algorithm = '';
+  ivLength = 16;
 
   constructor(private configService: ConfigService) {
     this.key = configService.get('app.key');
@@ -35,7 +35,7 @@ export class Encrypter {
    * @return string
    *
    */
-  public encrypt(value: any, serialize: boolean = true) {
+  public encrypt(value: any, serialize = true) {
     const iv = crypto.randomBytes(this.ivLength);
 
     // First we will encrypt the value using OpenSSL. After this is encrypted we

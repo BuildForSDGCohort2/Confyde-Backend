@@ -14,7 +14,6 @@ import { AuthModule } from './auth/auth.module';
 // Import Configuration files
 import databaseConfig from './shared/config/database.config';
 import appConfig from './shared/config/app.config';
-import { Helpers } from './shared/helpers';
 import mailConfig from './shared/config/mail.config';
 import * as handlebars from 'handlebars';
 import { Encrypter } from './shared/encrypter';
@@ -42,7 +41,6 @@ const helpers = (configService: ConfigService) => ({
     }),
     MailerModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
-
         transport: {
           host: configService.get('mail.host'),
           port: configService.get('mail.port'),
@@ -83,5 +81,6 @@ const helpers = (configService: ConfigService) => ({
   ],
   controllers: [AppController],
   providers: [AppService, Encrypter],
+  exports: [Encrypter],
 })
 export class AppModule {}

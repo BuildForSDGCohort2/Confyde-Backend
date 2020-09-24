@@ -9,9 +9,9 @@ import { Repository, MoreThan } from 'typeorm';
 import { UserLoginDto } from '../shared/dto/user-login.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { UserPasswordResetDto } from 'src/shared/dto/user-password-reset.dto';
-import { UrlSigner } from 'src/shared/url-signer';
-import { route } from 'src/shared/helpers';
+import { UserPasswordResetDto } from './../shared/dto/user-password-reset.dto';
+import { UrlSigner } from './../shared/url-signer';
+import { route } from './../shared/helpers';
 
 @Injectable()
 export class AuthService {
@@ -56,14 +56,14 @@ export class AuthService {
     return user;
   }
 
-  async validateUser(userId: any, data: any, userType: string = 'admin') {
+  async validateUser(userId: any, data: any, userType = 'admin') {
     let repo = null;
 
     if (userType === 'admin') {
       repo = this.adminRepo;
     }
 
-    let user = await repo.findOne({
+    const user = await repo.findOne({
       where: {
         id: userId,
         email: data.email,
@@ -97,7 +97,7 @@ export class AuthService {
   }
 
   async resetPassword(dto: UserPasswordResetDto, userType: string) {
-    let user = null;
+    const user = null;
 
     if (userType === 'admin') {
       throw new HttpException('Invalid Request', HttpStatus.BAD_REQUEST);
