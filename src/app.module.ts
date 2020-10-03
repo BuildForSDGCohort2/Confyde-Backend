@@ -18,6 +18,8 @@ import mailConfig from './shared/config/mail.config';
 import * as handlebars from 'handlebars';
 import { Encrypter } from './shared/encrypter';
 import { FileUploaderModule } from './shared/file-uploader/file-uploader.module';
+import { UserModule } from './user/user.module';
+import { PhysicianModule } from './physician/physician.module';
 
 const helpers = (configService: ConfigService) => ({
   config(value: string) {
@@ -78,6 +80,8 @@ const helpers = (configService: ConfigService) => ({
     AdminModule,
     AuthModule,
     FileUploaderModule,
+    UserModule,
+    PhysicianModule,
   ],
   controllers: [AppController],
   providers: [AppService, Encrypter],

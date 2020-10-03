@@ -27,6 +27,8 @@ export class PhysicianProfile {
     physician => physician.id,
     {
       eager: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'NO ACTION',
     },
   )
   @JoinColumn({ name: 'physician_id' })

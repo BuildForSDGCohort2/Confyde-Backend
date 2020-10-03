@@ -8,7 +8,7 @@ import { User } from './../../shared/database';
 export class UsersService extends TypeOrmCrudService<User> {
   constructor(
     @InjectRepository(User)
-    private readonly repository: Repository<User>,
+    public readonly repository: Repository<User>,
   ) {
     super(repository);
   }

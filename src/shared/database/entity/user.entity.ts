@@ -13,26 +13,33 @@ import {
 import * as bcrypt from 'bcrypt';
 import { UserProfile } from './user_profile.entity';
 import { UserMedicalData } from './user_medical_data.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('users')
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn({
     type: 'bigint',
   })
   id?: number;
 
+  @ApiProperty()
   @Column({ length: 100, unique: true })
   email: string;
 
+  @ApiProperty()
   @Column({ length: 50 })
   username: string;
 
+  @ApiProperty()
   @Column({ length: 191 })
   password: string;
 
+  @ApiProperty()
   @Column({ length: 191, nullable: true })
   avatar?: string;
 
+  @ApiProperty()
   @Column({ type: 'tinyint', default: 1 })
   status: number;
 

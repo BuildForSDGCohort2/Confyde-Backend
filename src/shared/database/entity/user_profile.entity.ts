@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
   Column,
@@ -25,26 +26,34 @@ export class UserProfile {
     user => user.id,
     {
       eager: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'NO ACTION'
     },
   )
   @JoinColumn({ name: 'user_id' })
   user: User | number;
 
+  @ApiProperty()
   @Column({ length: 100, name: 'first_name' })
   firstName: string;
 
+  @ApiProperty()
   @Column({ length: 100, name: 'last_name' })
   lastName: string;
 
+  @ApiProperty()
   @Column({ length: 50 })
   phone: string;
 
+  @ApiProperty()
   @Column({ type: 'text', nullable: true })
   biography?: string;
 
+  @ApiProperty()
   @Column({ name: 'last_treated_ailment', type: 'text', nullable: true })
   lastTreatedAilment?: string;
 
+  @ApiProperty()
   @Column({ name: 'is_anonymous', type: 'tinyint', default: 0 })
   isAnonymous?: number;
 

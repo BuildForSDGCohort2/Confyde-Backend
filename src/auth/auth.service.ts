@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { MailerService } from '@nestjs-modules/mailer';
 import { STRINGS } from '../shared/constants';
 import { Encrypter } from '../shared/encrypter';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Admin } from '../shared/database';
+import { Admin, User, Physician } from '../shared/database';
 import { Repository, MoreThan } from 'typeorm';
 import { UserLoginDto } from '../shared/dto/user-login.dto';
 import * as bcrypt from 'bcrypt';
@@ -18,6 +19,10 @@ export class AuthService {
   constructor(
     @InjectRepository(Admin)
     private readonly adminRepo: Repository<Admin>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
+    @InjectRepository(Physician)
+    private readonly physicianRepo: Repository<Physician>,
     private jwtService: JwtService,
     private configService: ConfigService,
     private encrypter: Encrypter,
@@ -27,6 +32,28 @@ export class AuthService {
 
   async adminLogin({ username, password }: UserLoginDto): Promise<Admin> {
     const user = await this.adminRepo.findOne({ where: { email: username } });
+
+    if (!user) {
+      throw new HttpException(
+        STRINGS.auth.login.invalid,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    // console.log(user);
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new HttpException(
+        STRINGS.auth.login.invalid,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    return user;
+  }
+
+  async userLogin({ username, password }: UserLoginDto, userType: string): Promise<User | Physician> {
+    const user = userType === 'physician'
+      ? await this.physicianRepo.findOne({ where: { email: username } })
+      : await this.userRepo.findOne({ where: { email: username } });
 
     if (!user) {
       throw new HttpException(
@@ -63,6 +90,14 @@ export class AuthService {
       repo = this.adminRepo;
     }
 
+    if (userType === 'user') {
+      repo = this.userRepo;
+    }
+
+    if (userType === 'physician') {
+      repo = this.physicianRepo;
+    }
+
     const user = await repo.findOne({
       where: {
         id: userId,
@@ -78,6 +113,14 @@ export class AuthService {
 
     if (userType === 'admin') {
       user = await this.adminLogin(loginDto);
+    }
+
+    if (userType === 'user') {
+      user = await this.userLogin(loginDto, 'user');
+    }
+
+    if (userType === 'physician') {
+      user = await this.userLogin(loginDto, 'physician');
     }
 
     return {
@@ -138,9 +181,23 @@ export class AuthService {
   }
 
   private _preparePayload(user: any, userType?: string): any {
-    const { id, email, firstName, lastName, name, userId } = user;
+    const { id, email, firstName, lastName } = user;
 
-    const data = this.encrypter.encrypt({ firstName, lastName, email });
+    let _data: any = {};
+
+    if (userType === 'user') {
+      _data = user.profile ? { firstName: user.profile.firstName, lastName: user.profile.lastName, email } : {email};
+    }
+    
+    if (userType === 'physician') {
+      _data = user.profile ? { firstName: user.profile.firstName, lastName: user.profile.lastName, email } : {email};
+    }
+    
+    if (userType === 'admin') {
+      _data = { firstName, lastName, email };
+    }
+
+    const data = this.encrypter.encrypt(_data);
     const encUserId = this.encrypter.encryptString(id.toString());
 
     return { data, sub: encUserId };

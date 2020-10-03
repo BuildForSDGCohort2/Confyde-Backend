@@ -1,5 +1,5 @@
 import { Controller, Body, Post, UseGuards, Get, Req } from '@nestjs/common';
-import { AuthService } from './../../auth/auth.service';
+import { AuthService } from '../auth.service';
 import {
   ApiBody,
   ApiTags,
@@ -7,10 +7,10 @@ import {
   ApiUnauthorizedResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { UserLoginDto } from './../../shared/dto/user-login.dto';
-import { STRINGS } from './../../shared/constants';
+import { UserLoginDto } from '../../shared/dto/user-login.dto';
+import { STRINGS } from '../../shared/constants';
 import { AdminAuthGuard } from '../guards/admin.guard';
-import { Admin } from './../../shared/database';
+import { Admin } from '../../shared/database';
 
 @ApiTags('Admin - Authentication')
 @Controller('admin/auth')
@@ -27,7 +27,7 @@ export class AdminAuthController {
     description: `Return JSON Object with {statusCode: 401, message: ${STRINGS.auth.login.invalid}}`,
   })
   @Post('login')
-  async login(@Body() userLoginDto: UserLoginDto) {
+  async login(@Body() userLoginDto: UserLoginDto): Promise<any> {
     return await this.authService.login(userLoginDto, 'admin');
   }
 

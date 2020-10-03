@@ -1,4 +1,4 @@
-import { Admin } from '../../shared/database';
+import { Physician } from '../../shared/database';
 import { Encrypter } from '../../shared/encrypter';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Strategy, ExtractJwt } from 'passport-jwt';
@@ -7,7 +7,7 @@ import { readFileSync } from 'fs';
 import { AuthService } from '../auth.service';
 
 @Injectable()
-export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {
+export class PhysicianStrategy extends PassportStrategy(Strategy, 'physician') {
   constructor(private authService: AuthService, private encrypter: Encrypter) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -25,7 +25,7 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {
     const userId: number = this.encrypter.decryptString(payload.sub);
     const data: any = this.encrypter.decrypt(payload.data, true);
 
-    const user: Admin = await this.authService.validateAdmin(userId, data);
+    const user: Physician = await this.authService.validateUser(userId, data, 'physician');
 
     if (!user) {
       throw new UnauthorizedException();

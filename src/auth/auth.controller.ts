@@ -1,20 +1,12 @@
 import { Encrypter } from '../shared/encrypter';
-import { Helpers } from '../shared/helpers';
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
-import { ApiBody, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserLoginDto } from '../shared/dto/user-login.dto';
-import { AdminAuthGuard } from './guards/admin.guard';
 import { ConfigService } from '@nestjs/config';
 
 // @ApiTags('Admin Authentication Module')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private configService: ConfigService,
-    private encrypter: Encrypter,
-  ) {}
+  // constructor() {}
 
   // @ApiBody({
   //   type: UserLoginDto,

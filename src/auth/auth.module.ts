@@ -1,6 +1,10 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { PhysicianAuthController } from './user-auths/physician-auth.controller';
+import { UserAuthController } from './user-auths/user-auth.controller';
+import { PhysicianStrategy } from './strategies/physician.strategy';
+import { UserStrategy } from './strategies/user.strategy';
+import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { DatabaseModule, Admin } from '../shared/database';
+import { DatabaseModule, Admin, User, Physician } from '../shared/database';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -10,13 +14,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Helpers } from '../shared/helpers';
 import { Encrypter } from '../shared/encrypter';
 import { AdminStrategy } from './strategies/admin.strategy';
-import { AdminAuthController } from './admin/admin-auth.controller';
+import { AdminAuthController } from './user-auths/admin-auth.controller';
 import { UrlSigner } from './../shared/url-signer';
 
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forFeature([Admin]),
+    TypeOrmModule.forFeature([Admin, User, Physician]),
     PassportModule.register({ defaultStrategy: 'customer' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -31,7 +35,7 @@ import { UrlSigner } from './../shared/url-signer';
             ).toString(),
             passphrase: appKey,
           },
-          signOptions: { expiresIn: '1d', algorithm: 'RS256' },
+          signOptions: { expiresIn: '1w', algorithm: 'RS256' },
         };
       },
       inject: [ConfigService],
@@ -41,7 +45,7 @@ import { UrlSigner } from './../shared/url-signer';
     //   signOptions: { expiresIn: '60s', algorithm: 'RS256' },
     // }),
   ],
-  providers: [AuthService, AdminStrategy, Encrypter, UrlSigner],
-  controllers: [AuthController, AdminAuthController],
+  providers: [AuthService, AdminStrategy, UserStrategy, PhysicianStrategy, Encrypter, UrlSigner],
+  controllers: [AuthController, AdminAuthController, UserAuthController, PhysicianAuthController],
 })
 export class AuthModule {}

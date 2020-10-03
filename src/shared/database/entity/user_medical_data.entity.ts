@@ -25,6 +25,8 @@ export class UserMedicalData {
     user => user.id,
     {
       eager: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'NO ACTION',
     },
   )
   @JoinColumn({ name: 'user_id' })

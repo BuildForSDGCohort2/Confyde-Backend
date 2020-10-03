@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, MaxLength } from 'class-validator';
-import { IsEqual, IsUnique } from '../validations';
+import { IsNotEmpty } from 'class-validator';
+import { IsEqual } from '../validations';
 
 export class PasswordUpdateDto {
   @ApiProperty()

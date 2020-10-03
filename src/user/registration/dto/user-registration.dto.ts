@@ -3,12 +3,11 @@ import {
   IsEmail,
   IsNotEmpty,
   MaxLength,
-  IsOptional,
 } from 'class-validator';
 import { IsEqual, IsUnique } from '../../../shared/validations';
-import { User, UserProfile } from '../../../shared/database';
+import { User } from '../../../shared/database';
 
-export class CreateUserDto {
+export class UserRegistrationDto {
   @ApiProperty({ description: 'Email address'})
   @IsUnique(User)
   @MaxLength(100, { message: 'Email too Long' })
@@ -30,16 +29,4 @@ export class CreateUserDto {
   @IsEqual('password', { message: 'Passwords does not match' })
   @IsNotEmpty({ message: 'Password Confirmation is required' })
   passwordConfirmation: string;
-
-  @ApiProperty({ description: 'Profile picture (optional)'})
-  @IsOptional()
-  avatar: string;
-
-  @ApiProperty({description: 'Account status (optional)', type: Number })
-  @IsNotEmpty({ message: 'Status is required' })
-  status: number;
-
-  @ApiProperty({ description: 'User Profile Data', type: UserProfile })
-  @IsNotEmpty({ message: 'User Profile is required'})
-  profile: UserProfile;
 }
